@@ -2,15 +2,14 @@ package main
 
 import "fmt"
 
-
 const (
-	spanish = "Spanish"
-	french  = "French"
-	arabic = "Arabic"
+	spanish            = "Spanish"
+	french             = "French"
+	arabic             = "Arabic"
 	englishHelloPrefix = "Hello, "
 	spanishHelloPrefix = "Hola, "
 	frenchHelloPrefix  = "Bonjour, "
-	arabicHelloPrefix = "Salaam, "
+	arabicHelloPrefix  = "Salaam, "
 )
 
 func Hello(name string, language string) string {
