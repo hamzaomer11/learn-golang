@@ -1,6 +1,8 @@
 package structs
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestPerimeter(t *testing.T) {
 	rectangle := Rectangle{10.0, 10.0}
@@ -14,22 +16,21 @@ func TestPerimeter(t *testing.T) {
 
 func TestArea(t *testing.T) {
 
-	checkArea := func(t testing.TB, shape Shape, expected float64) {
-		t.Helper()
-		got := shape.Area()
+	areaTests := []struct {
+		shape    Shape
+		expected float64
+	}{
+		{shape: Rectangle{Width: 12.0, Height: 6.0}, expected: 72.0},
+		{shape: Circle{Radius: 10}, expected: 314.1592653589793},
+		{shape: Triangle{Base: 12, Height: 6}, expected: 36.0},
+	}
 
-		if got != expected {
-			t.Errorf("got %g expected %g", got, expected)
+	for _, tt := range areaTests {
+		got := tt.shape.Area()
+
+		if got != tt.expected {
+			t.Errorf("got %g expected %g", got, tt.expected)
 		}
 	}
 
-	t.Run("area of a rectangle", func(t *testing.T) {
-		rectangle := Rectangle{12.0, 6.0}
-		checkArea(t, rectangle, 72.0)
-	})
-
-	t.Run("area of a circle", func(t *testing.T) {
-		circle := Circle{10}
-		checkArea(t, circle, 314.1592653589793)
-	})
 }
