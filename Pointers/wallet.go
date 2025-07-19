@@ -16,7 +16,7 @@ type Wallet struct {
 }
 
 func (w *Wallet) Deposit(amount Bitcoin) {
-	fmt.Printf("address of balance in Deposit is %p is \n", &w.balance)
+	fmt.Printf("address of balance in Deposit is %ps \n", &w.balance)
 	w.balance += amount
 }
 
@@ -27,7 +27,7 @@ func (w *Wallet) Withdraw(amount Bitcoin) error {
 		return ErrInsufficientFunds
 	}
 
-	fmt.Printf("address of balance in Deposit is %p is \n", &w.balance)
+	fmt.Printf("address of balance in Deposit is %p \n", &w.balance)
 	w.balance -= amount
 	return nil
 }
