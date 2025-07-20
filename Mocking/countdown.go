@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"iter"
 	"os"
 	"time"
 )
@@ -70,7 +71,17 @@ func Countdown(out io.Writer, sleeper Sleeper) {
 	fmt.Fprint(out, finalWord)
 }
 
+func countdownFrom(from int) iter.Seq[int] {
+	return func(yield func(int) bool) {
+		for i := from; i > 0; i-- {
+			if !yield(i) {
+				return
+			}
+		}
+	}
+}
+
 func main() {
-	sleeper := &DefaultSleeper{}
+	sleeper := &ConfigurableSleeper{1 * time.Second, time.Sleep}
 	Countdown(os.Stdout, sleeper)
 }
