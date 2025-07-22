@@ -23,8 +23,39 @@ func TestWalk(t *testing.T) {
 		ExpectedCalls []string
 	}{
 		{
+			"struct with one string field",
+			struct {
+				Name string
+			}{"Chris"},
+			[]string{"Chris"},
+		},
+		{
+			"struct with two string fields",
+			struct {
+				Name string
+				City string
+			}{"Chris", "London"},
+			[]string{"Chris", "London"},
+		},
+		{
+			"struct with non string field",
+			struct {
+				Name string
+				Age  int
+			}{"Chris", 33},
+			[]string{"Chris"},
+		},
+		{
 			"nested fields",
 			Person{
+				"Chris",
+				Profile{33, "London"},
+			},
+			[]string{"Chris", "London"},
+		},
+		{
+			"pointers to things",
+			&Person{
 				"Chris",
 				Profile{33, "London"},
 			},

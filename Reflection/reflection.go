@@ -6,14 +6,18 @@ import (
 
 func walk(x interface{}, fn func(input string)) {
 	val := reflect.ValueOf(x)
+
+	if val.Kind() == reflect.Pointer {
+		val = val.Elem()
+	}
+
 	for i := 0; i < val.NumField(); i++ {
 		field := val.Field(i)
 
-		if field.Kind() == reflect.String {
+		switch field.Kind() {
+		case reflect.String:
 			fn(field.String())
-		}
-
-		if field.Kind() == reflect.Struct {
+		case reflect.Struct:
 			walk(field.Interface(), fn)
 		}
 	}
