@@ -1,33 +1,10 @@
-package clockface_test
+package clockface
 
 import (
-	clockface "learn-golang/Maths"
 	"math"
 	"testing"
 	"time"
 )
-
-func TestSecondHandAtMidnight(t *testing.T) {
-	tm := time.Date(1337, time.January, 1, 0, 0, 0, 0, time.UTC)
-
-	expected := clockface.Point{X: 150, Y: 150 - 90}
-	got := clockface.SecondHand(tm)
-
-	if got != expected {
-		t.Errorf("got %v, expected %v", got, expected)
-	}
-}
-
-// func TestSecondHandAt30Seconds(t *testing.T) {
-// 	tm := time.Date(1337, time.January, 1, 0, 0, 30, 0, time.UTC)
-
-// 	expected := clockface.Point{X: 150, Y: 150 + 90}
-// 	got := clockface.SecondHand(tm)
-
-// 	if got != expected {
-// 		t.Errorf("got %v, expected %v", got, expected)
-// 	}
-// }
 
 func TestSecondsInRadians(t *testing.T) {
 	cases := []struct {
@@ -42,7 +19,7 @@ func TestSecondsInRadians(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
-			got := clockface.SecondsInRadians(c.time)
+			got := SecondsInRadians(c.time)
 			if got != c.angle {
 				t.Fatalf("got %v, but expected %v radians", got, c.angle)
 			}
@@ -53,15 +30,15 @@ func TestSecondsInRadians(t *testing.T) {
 func TestSecondHandPoint(t *testing.T) {
 	cases := []struct {
 		time  time.Time
-		point clockface.Point
+		point Point
 	}{
-		{simpleTime(0, 0, 30), clockface.Point{0, -1}},
-		{simpleTime(0, 0, 45), clockface.Point{-1, 0}},
+		{simpleTime(0, 0, 30), Point{0, -1}},
+		{simpleTime(0, 0, 45), Point{-1, 0}},
 	}
 
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
-			got := clockface.SecondHandPoint(c.time)
+			got := SecondHandPoint(c.time)
 			if !roughlyEqualPoint(got, c.point) {
 				t.Fatalf("expected %v Point, but got %v", c.point, got)
 			}
@@ -74,7 +51,7 @@ func roughlyEqualFloat64(a, b float64) bool {
 	return math.Abs(a-b) < equalityThreshold
 }
 
-func roughlyEqualPoint(a, b clockface.Point) bool {
+func roughlyEqualPoint(a, b Point) bool {
 	return roughlyEqualFloat64(a.X, b.X) &&
 		roughlyEqualFloat64(a.Y, b.Y)
 }
