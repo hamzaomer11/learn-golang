@@ -21,14 +21,21 @@ const (
 	tagSeperator         = "Tags: "
 )
 
-func newPost(postFile io.Reader) (Post, error) {
-	scanner := bufio.NewScanner(postFile)
+func newPost(postBody io.Reader) (Post, error) {
+	scanner := bufio.NewScanner(postBody)
 
 	readMetaLine := func(tagName string) string {
 		scanner.Scan()
 		return strings.TrimPrefix(scanner.Text(), tagName)
 	}
 
+	return Post{Title: readMetaLine(titleSeperator),
+		Description: readMetaLine(descriptionSeperator),
+		Tags:        strings.Split(readMetaLine(tagSeperator), ", "),
+		Body:        ReadBody(scanner)}, nil
+}
+
+func ReadBody(scanner *bufio.Scanner) string {
 	scanner.Scan()
 
 	buf := bytes.Buffer{}
@@ -36,10 +43,5 @@ func newPost(postFile io.Reader) (Post, error) {
 		fmt.Fprintln(&buf, scanner.Text())
 	}
 
-	body := strings.TrimSuffix(buf.String(), "\n")
-
-	return Post{Title: readMetaLine(titleSeperator),
-		Description: readMetaLine(descriptionSeperator),
-		Tags:        strings.Split(readMetaLine(tagSeperator), ", "),
-		Body:        body}, nil
+	return strings.TrimSuffix(buf.String(), "\n")
 }

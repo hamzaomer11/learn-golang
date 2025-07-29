@@ -31,11 +31,13 @@ M`
 	posts, _ := blogposts.NewPostsFromFS(fs)
 
 	got := posts[0]
-	expected := blogposts.Post{Title: "Post 1",
+	expected := blogposts.Post{
+		Title:       "Post 1",
 		Description: "Description 1",
 		Tags:        []string{"tdd", "go"},
-		Body: `Hello 
-		World`}
+		Body: `Hello
+World`,
+	}
 
 	assertPost(t, got, expected)
 }
