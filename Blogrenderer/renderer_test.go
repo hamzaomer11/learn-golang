@@ -5,6 +5,8 @@ import (
 	blogrenderer "learn-golang/Blogrenderer"
 	blogposts "learn-golang/Reading-Files"
 	"testing"
+
+	approvals "github.com/approvals/go-approval-tests"
 )
 
 func TestRenderer(t *testing.T) {
@@ -19,17 +21,11 @@ func TestRenderer(t *testing.T) {
 
 	t.Run("it converts a single post to HTML", func(t *testing.T) {
 		buf := bytes.Buffer{}
-		err := blogrenderer.Render(&buf, aPost)
 
-		if err != nil {
+		if err := blogrenderer.Render(&buf, aPost); err != nil {
 			t.Fatal(err)
 		}
 
-		got := buf.String()
-		expected := `<h1>hello world</h1><p>This is a description</p>Tags: <ul><li>go</li><li>tdd</li></ul>`
-
-		if got != expected {
-			t.Errorf("got %s, expected %s", got, expected)
-		}
+		approvals.VerifyString(t, buf.String())
 	})
 }
